@@ -16,6 +16,8 @@ import {
 
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
+import Layout from "./components/Layout";
+import Toast from "./components/Toast";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -53,51 +55,54 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="min-h-screen bg-dark-100">
-        <Routes>
-          {/* Public routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/movie/:id" element={<MovieDetail />} />
-          <Route path="/tv/:id" element={<TVDetail />} />
-          <Route path="/search" element={<Search />} />
+    <>
+      <Toast />
+      <Router>
+        <Layout>
+          <Routes>
+            {/* Public routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/movie/:id" element={<MovieDetail />} />
+            <Route path="/tv/:id" element={<TVDetail />} />
+            <Route path="/search" element={<Search />} />
 
-          {/* Protected user routes */}
-          <Route
-            path="/favorites"
-            element={
-              <PrivateRoute>
-                <Favorites />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <PrivateRoute>
-                <WatchHistory />
-              </PrivateRoute>
-            }
-          />
+            {/* Protected user routes */}
+            <Route
+              path="/favorites"
+              element={
+                <PrivateRoute>
+                  <Favorites />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/history"
+              element={
+                <PrivateRoute>
+                  <WatchHistory />
+                </PrivateRoute>
+              }
+            />
 
-          {/* Admin only route */}
-          <Route
-            path="/admin/*"
-            element={
-              <AdminRoute>
-                <Admin />
-              </AdminRoute>
-            }
-          />
+            {/* Admin only route */}
+            <Route
+              path="/admin/*"
+              element={
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
+              }
+            />
 
-          {/* Fallback */}
-          <Route path="/404" element={<NotFound />} />
-          <Route path="*" element={<Navigate to="/404" replace />} />
-        </Routes>
-      </div>
-    </Router>
+            {/* Fallback */}
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
+          </Routes>
+        </Layout>
+      </Router>
+    </>
   );
 }
 
