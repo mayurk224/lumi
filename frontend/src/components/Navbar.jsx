@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
-      navigate(`/search?q=${searchQuery.trim()}`);
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
       setIsMenuOpen(false);
     }
