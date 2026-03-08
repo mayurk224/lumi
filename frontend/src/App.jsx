@@ -29,6 +29,7 @@ import Favorites from "./pages/Favorites";
 import WatchHistory from "./pages/WatchHistory";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import PersonDetail from "./pages/PersonDetail";
 
 function App() {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/movie/:id" element={<MovieDetail />} />
             <Route path="/tv/:id" element={<TVDetail />} />
+            <Route path="/person/:id" element={<PersonDetail />} />
             <Route path="/search" element={<Search />} />
 
             {/* Protected user routes */}
