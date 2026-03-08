@@ -30,6 +30,7 @@ import WatchHistory from "./pages/WatchHistory";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import PersonDetail from "./pages/PersonDetail";
+import Profile from "./pages/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -84,6 +85,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <WatchHistory />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Profile />
                 </PrivateRoute>
               }
             />

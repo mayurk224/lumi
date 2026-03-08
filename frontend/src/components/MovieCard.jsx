@@ -15,6 +15,7 @@ const MovieCard = ({
   id,
   title,
   posterPath,
+  posterUrl: propPosterUrl,
   rating,
   type = "movie",
   releaseDate,
@@ -24,7 +25,7 @@ const MovieCard = ({
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const isFavorited = useSelector(selectIsFavorited(String(id)));
-  const posterUrl = getPosterUrl(posterPath);
+  const posterUrl = propPosterUrl || getPosterUrl(posterPath);
   const year = releaseDate ? new Date(releaseDate).getFullYear() : "";
   const displayRating = rating ? rating.toFixed(1) : "N/A";
 

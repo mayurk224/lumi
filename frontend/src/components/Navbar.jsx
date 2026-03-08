@@ -10,6 +10,7 @@ import {
   FiMenu,
   FiX,
   FiShield,
+  FiUser,
 } from "react-icons/fi";
 
 const Navbar = () => {
@@ -112,6 +113,13 @@ const Navbar = () => {
                     </span>
                   </div>
                   <span className="text-gray-300 text-sm">{user.username}</span>
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all text-gray-300 hover:text-white hover:bg-white/5"
+                  >
+                    <FiUser className="w-4 h-4" />
+                    Profile
+                  </Link>
                   <button
                     onClick={handleLogout}
                     title="Logout"
@@ -210,6 +218,14 @@ const Navbar = () => {
                     {user.username}
                   </span>
                 </div>
+                <Link
+                  to="/profile"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full flex items-center gap-3 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg px-2 text-sm font-medium transition-colors"
+                >
+                  <FiUser className="w-4 h-4" />
+                  Profile
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center justify-center gap-2 py-3 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors mt-1 border border-red-500/20"
