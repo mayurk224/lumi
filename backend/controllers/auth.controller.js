@@ -32,12 +32,20 @@ const registerUser = async (req, res) => {
     const user = new User({ username, email, password });
     await user.save();
 
+    const token = generateToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(201).json({
       _id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -62,12 +70,20 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    const token = generateToken(user._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(200).json({
       _id: user._id,
       username: user.username,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id),
+      token,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -87,8 +103,17 @@ const getMe = async (req, res) => {
   }
 };
 
+const logoutUser = (req, res) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
 module.exports = {
   registerUser,
   loginUser,
+  logoutUser,
   getMe,
 };
