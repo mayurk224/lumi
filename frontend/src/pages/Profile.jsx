@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { selectUser } from "../redux/authSlice";
 import { selectFavorites, selectWatchHistory } from "../redux/movieSlice";
+import { selectWatchlist, selectRecentlyViewed } from "../redux/uiSlice";
 import PageHeader from "../components/PageHeader";
 import StatsCard from "../components/StatsCard";
 import MovieCard from "../components/MovieCard";
@@ -12,12 +13,16 @@ import {
   FiFilm,
   FiShield,
   FiCalendar,
+  FiBookmark,
+  FiEye,
 } from "react-icons/fi";
 
 export default function Profile() {
   const user = useSelector(selectUser);
   const favorites = useSelector(selectFavorites);
   const history = useSelector(selectWatchHistory);
+  const watchlist = useSelector(selectWatchlist);
+  const recentlyViewed = useSelector(selectRecentlyViewed);
   const navigate = useNavigate();
 
   let joinDate = "—";
@@ -84,7 +89,7 @@ export default function Profile() {
 
         <div>
           <h2 className="text-white font-bold text-lg mb-4">Your Activity</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             <StatsCard
               icon={<FiHeart className="w-5 h-5" />}
               label="Favorites"
@@ -104,6 +109,18 @@ export default function Profile() {
               color="green"
             />
             <StatsCard
+              icon={<FiBookmark className="w-5 h-5" />}
+              label="Watchlist"
+              value={watchlist.length}
+              color="purple"
+            />
+            <StatsCard
+              icon={<FiEye className="w-5 h-5" />}
+              label="Recently Viewed"
+              value={recentlyViewed.length}
+              color="red"
+            />
+            <StatsCard
               icon={<FiCalendar className="w-5 h-5" />}
               label="Member Since"
               value={
@@ -116,6 +133,31 @@ export default function Profile() {
               color="yellow"
             />
           </div>
+        </div>
+
+        {/* Quick Links */}
+        <div className="flex flex-wrap gap-3">
+          <Link
+            to="/watchlist"
+            className="flex items-center gap-2 bg-dark-200 hover:bg-dark-300/50 border border-white/5 hover:border-primary-500/30 text-gray-300 hover:text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+          >
+            <FiBookmark className="w-4 h-4 text-primary-400" />
+            View Watchlist ({watchlist.length})
+          </Link>
+          <Link
+            to="/favorites"
+            className="flex items-center gap-2 bg-dark-200 hover:bg-dark-300/50 border border-white/5 hover:border-primary-500/30 text-gray-300 hover:text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+          >
+            <FiHeart className="w-4 h-4 text-red-400" />
+            View Favorites ({favorites.length})
+          </Link>
+          <Link
+            to="/history"
+            className="flex items-center gap-2 bg-dark-200 hover:bg-dark-300/50 border border-white/5 hover:border-primary-500/30 text-gray-300 hover:text-white px-4 py-2.5 rounded-xl text-sm font-medium transition-all"
+          >
+            <FiClock className="w-4 h-4 text-blue-400" />
+            Watch History ({history.length})
+          </Link>
         </div>
 
         {recentFavorites.length > 0 && (

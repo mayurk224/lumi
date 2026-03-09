@@ -13,6 +13,7 @@ import {
   selectToken,
   selectIsInitialized,
 } from "./redux/authSlice";
+import useTheme from "./hooks/useTheme";
 
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
@@ -37,11 +38,17 @@ import PersonDetail from "./pages/PersonDetail";
 import Profile from "./pages/Profile";
 import Movies from "./pages/Movies";
 import TVShows from "./pages/TVShows";
+import Watchlist from "./pages/Watchlist";
+import Genres from "./pages/Genres";
+import RecentlyViewedDrawer from "./components/RecentlyViewedDrawer";
 
 function App() {
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const isInitialized = useSelector(selectIsInitialized);
+
+  // Apply theme class to <html>
+  useTheme();
 
   // Restore user session on app load
   useEffect(() => {
@@ -68,6 +75,7 @@ function App() {
       <NetworkStatus />
       <Router>
         <ScrollToTop />
+        <RecentlyViewedDrawer />
         <Layout>
           <PageTransition>
             <Routes>
@@ -83,6 +91,8 @@ function App() {
               <Route path="/tv/:id" element={<TVDetail />} />
               <Route path="/person/:id" element={<PersonDetail />} />
               <Route path="/search" element={<Search />} />
+              <Route path="/watchlist" element={<Watchlist />} />
+              <Route path="/genres" element={<Genres />} />
 
               {/* Protected user routes */}
               <Route

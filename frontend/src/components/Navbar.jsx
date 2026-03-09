@@ -13,7 +13,10 @@ import {
   FiUser,
   FiFilm,
   FiTv,
+  FiBookmark,
+  FiGrid,
 } from "react-icons/fi";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,6 +99,14 @@ const Navbar = () => {
             >
               <FiTv className="w-4 h-4" /> TV Shows
             </NavLink>
+            <NavLink
+              to="/genres"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? "text-primary-400 bg-primary-500/10" : "text-gray-300 hover:text-white hover:bg-white/5"}`
+              }
+            >
+              <FiGrid className="w-4 h-4" /> Genres
+            </NavLink>
             {user ? (
               <>
                 <NavLink
@@ -113,6 +124,14 @@ const Navbar = () => {
                   }
                 >
                   <FiClock className="w-4 h-4" /> History
+                </NavLink>
+                <NavLink
+                  to="/watchlist"
+                  className={({ isActive }) =>
+                    `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? "text-primary-400 bg-primary-500/10" : "text-gray-300 hover:text-white hover:bg-white/5"}`
+                  }
+                >
+                  <FiBookmark className="w-4 h-4" /> Watchlist
                 </NavLink>
                 {isAdmin && (
                   <NavLink
@@ -146,9 +165,18 @@ const Navbar = () => {
                     <FiLogOut className="w-4 h-4" />
                   </button>
                 </div>
+                <ThemeToggle size="md" />
               </>
             ) : (
               <>
+                <NavLink
+                  to="/genres"
+                  className={({ isActive }) =>
+                    `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? "text-primary-400 bg-primary-500/10" : "text-gray-300 hover:text-white hover:bg-white/5"}`
+                  }
+                >
+                  <FiGrid className="w-4 h-4" /> Genres
+                </NavLink>
                 <Link
                   to="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"
@@ -215,6 +243,13 @@ const Navbar = () => {
             >
               <FiTv className="w-4 h-4" /> TV Shows
             </Link>
+            <Link
+              to="/genres"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full flex items-center gap-3 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg px-2"
+            >
+              <FiGrid className="w-4 h-4" /> Genres
+            </Link>
             {user ? (
               <>
                 <Link
@@ -231,6 +266,13 @@ const Navbar = () => {
                 >
                   <FiClock className="w-4 h-4" /> History
                 </Link>
+                <Link
+                  to="/watchlist"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-full flex items-center gap-3 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg px-2"
+                >
+                  <FiBookmark className="w-4 h-4" /> Watchlist
+                </Link>
                 {isAdmin && (
                   <Link
                     to="/admin"
@@ -240,15 +282,18 @@ const Navbar = () => {
                     <FiShield className="w-4 h-4" /> Admin
                   </Link>
                 )}
-                <div className="flex items-center gap-3 py-3 px-2 border-t border-white/10 mt-2">
-                  <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">
-                      {user?.username?.[0]?.toUpperCase() || "U"}
+                <div className="flex items-center justify-between py-3 px-2 border-t border-white/10 mt-2">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center">
+                      <span className="text-white text-xs font-bold">
+                        {user?.username?.[0]?.toUpperCase() || "U"}
+                      </span>
+                    </div>
+                    <span className="text-gray-300 text-sm">
+                      {user.username}
                     </span>
                   </div>
-                  <span className="text-gray-300 text-sm flex-1">
-                    {user.username}
-                  </span>
+                  <ThemeToggle size="sm" />
                 </div>
                 <Link
                   to="/profile"

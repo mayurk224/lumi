@@ -17,12 +17,16 @@ import {
   fetchFavorites,
 } from "../redux/movieSlice";
 import { selectUser } from "../redux/authSlice";
+import { addToRecentlyViewed } from "../redux/uiSlice";
 import toast from "react-hot-toast";
 import TrailerModal from "../components/TrailerModal";
 import CastCard from "../components/CastCard";
 import MovieRow from "../components/MovieRow";
 import SkeletonDetailPage from "../components/SkeletonDetailPage";
 import RatingCircle from "../components/RatingCircle";
+import StarRating from "../components/StarRating";
+import WatchlistButton from "../components/WatchlistButton";
+import ShareButton from "../components/ShareButton";
 import {
   FiPlay,
   FiHeart,
@@ -82,6 +86,16 @@ export default function TVDetail() {
               movieId: String(detailsRes.data.id),
               title: detailsRes.data.name,
               posterUrl: getPosterUrl(detailsRes.data.poster_path),
+            }),
+          );
+          // Add to recently viewed
+          dispatch(
+            addToRecentlyViewed({
+              id: detailsRes.data.id,
+              title: detailsRes.data.name,
+              posterPath: detailsRes.data.poster_path,
+              type: 'tv',
+              rating: detailsRes.data.vote_average,
             }),
           );
         }
@@ -285,6 +299,26 @@ export default function TVDetail() {
                 />
                 {isFavorited ? "In Favorites" : "Add to Favorites"}
               </button>
+
+              <WatchlistButton
+                id={movie.id}
+                title={movie.name}
+                posterPath={movie.poster_path}
+                type="tv"
+                rating={movie.vote_average}
+                overview={movie.overview}
+                showLabel={true}
+                size="md"
+              />
+            </div>
+
+            {/* Share Button */}
+            <div className="flex items-center gap-3 mb-8">
+              <ShareButton
+                title={movie.name}
+                text={`Check out ${movie.name} on MovieVault!`}
+                url={window.location.href}
+              />
             </div>
 
             <div className="mb-8">
@@ -292,6 +326,17 @@ export default function TVDetail() {
               <p className="text-gray-300 leading-relaxed text-base">
                 {movie.overview || "No overview available for this title."}
               </p>
+            </div>
+
+            {/* User Rating */}
+            <div className="mb-8">
+              <h3 className="text-white font-bold text-base mb-3">Your Rating</h3>
+              <StarRating
+                movieId={String(movie.id)}
+                size="lg"
+                showCount={true}
+                tmdbRating={movie.vote_average}
+              />
             </div>
 
             {creator && (
