@@ -1,19 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { getPopularTV, getTopRatedTV, getOnAirTV } from '../api/tmdb';
-import MovieGrid from '../components/MovieGrid';
-import InfiniteScrollSentinel from '../components/InfiniteScrollSentinel';
-import GenreFilter from '../components/GenreFilter';
-import { Tv } from 'lucide-react';
+import { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { getPopularTV, getTopRatedTV, getOnAirTV } from "../api/tmdb";
+import MovieGrid from "../components/MovieGrid";
+import InfiniteScrollSentinel from "../components/InfiniteScrollSentinel";
+import GenreFilter from "../components/GenreFilter";
+import { Tv } from "lucide-react";
 
 const CATEGORY_MAP = {
-  popular: { label: 'Popular', fetchFn: getPopularTV },
-  'top-rated': { label: 'Top Rated', fetchFn: getTopRatedTV },
-  'on-air': { label: 'On Air Now', fetchFn: getOnAirTV },
+  popular: { label: "Popular", fetchFn: getPopularTV },
+  "top-rated": { label: "Top Rated", fetchFn: getTopRatedTV },
+  "on-air": { label: "On Air Now", fetchFn: getOnAirTV },
 };
 
 const TVShows = () => {
-  const { category = 'popular' } = useParams();
+  const { category = "popular" } = useParams();
   const [shows, setShows] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -44,7 +44,7 @@ const TVShows = () => {
         setHasMore(pageNum < data.total_pages);
         setPage(pageNum);
       } catch (error) {
-        console.error('Failed to fetch TV shows:', error);
+        console.error("Failed to fetch TV shows:", error);
         if (pageNum === 1) {
           setShows([]);
         }
@@ -53,7 +53,7 @@ const TVShows = () => {
         setLoadingMore(false);
       }
     },
-    [currentCategory]
+    [currentCategory],
   );
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const TVShows = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pt-24 pb-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <div className="p-3 bg-red-600 rounded-lg">
@@ -101,9 +101,9 @@ const TVShows = () => {
         {/* Results count */}
         {!loading && filteredShows.length > 0 && (
           <div className="mb-6 text-gray-400 text-sm">
-            Showing {filteredShows.length}{' '}
-            {filteredShows.length === 1 ? 'show' : 'shows'}
-            {selectedGenre && ' in selected genre'}
+            Showing {filteredShows.length}{" "}
+            {filteredShows.length === 1 ? "show" : "shows"}
+            {selectedGenre && " in selected genre"}
           </div>
         )}
 
@@ -123,7 +123,7 @@ const TVShows = () => {
         {!loading && filteredShows.length === 0 && (
           <div className="text-center py-20">
             <p className="text-gray-400 text-lg">
-              No shows found{selectedGenre && ' for this genre'}
+              No shows found{selectedGenre && " for this genre"}
             </p>
           </div>
         )}

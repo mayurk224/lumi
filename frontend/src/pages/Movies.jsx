@@ -1,26 +1,26 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect, useCallback } from "react";
+import { useParams } from "react-router-dom";
 import {
   getPopularMovies,
   getTopRatedMovies,
   getNowPlayingMovies,
   getUpcomingMovies,
-} from '../api/tmdb';
-import MovieGrid from '../components/MovieGrid';
-import InfiniteScrollSentinel from '../components/InfiniteScrollSentinel';
-import GenreFilter from '../components/GenreFilter';
-import SectionHeader from '../components/SectionHeader';
-import { Film } from 'lucide-react';
+} from "../api/tmdb";
+import MovieGrid from "../components/MovieGrid";
+import InfiniteScrollSentinel from "../components/InfiniteScrollSentinel";
+import GenreFilter from "../components/GenreFilter";
+import SectionHeader from "../components/SectionHeader";
+import { Film } from "lucide-react";
 
 const CATEGORY_MAP = {
-  popular: { label: 'Popular', fetchFn: getPopularMovies },
-  'top-rated': { label: 'Top Rated', fetchFn: getTopRatedMovies },
-  'now-playing': { label: 'Now Playing', fetchFn: getNowPlayingMovies },
-  upcoming: { label: 'Upcoming', fetchFn: getUpcomingMovies },
+  popular: { label: "Popular", fetchFn: getPopularMovies },
+  "top-rated": { label: "Top Rated", fetchFn: getTopRatedMovies },
+  "now-playing": { label: "Now Playing", fetchFn: getNowPlayingMovies },
+  upcoming: { label: "Upcoming", fetchFn: getUpcomingMovies },
 };
 
 const Movies = () => {
-  const { category = 'popular' } = useParams();
+  const { category = "popular" } = useParams();
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -51,7 +51,7 @@ const Movies = () => {
         setHasMore(pageNum < data.total_pages);
         setPage(pageNum);
       } catch (error) {
-        console.error('Failed to fetch movies:', error);
+        console.error("Failed to fetch movies:", error);
         if (pageNum === 1) {
           setMovies([]);
         }
@@ -60,7 +60,7 @@ const Movies = () => {
         setLoadingMore(false);
       }
     },
-    [currentCategory]
+    [currentCategory],
   );
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const Movies = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pt-24 pb-8">
         {/* Header */}
         <div className="flex items-center gap-3 mb-8">
           <div className="p-3 bg-red-600 rounded-lg">
@@ -108,9 +108,9 @@ const Movies = () => {
         {/* Results count */}
         {!loading && filteredMovies.length > 0 && (
           <div className="mb-6 text-gray-400 text-sm">
-            Showing {filteredMovies.length}{' '}
-            {filteredMovies.length === 1 ? 'movie' : 'movies'}
-            {selectedGenre && ' in selected genre'}
+            Showing {filteredMovies.length}{" "}
+            {filteredMovies.length === 1 ? "movie" : "movies"}
+            {selectedGenre && " in selected genre"}
           </div>
         )}
 
@@ -130,7 +130,7 @@ const Movies = () => {
         {!loading && filteredMovies.length === 0 && (
           <div className="text-center py-20">
             <p className="text-gray-400 text-lg">
-              No movies found{selectedGenre && ' for this genre'}
+              No movies found{selectedGenre && " for this genre"}
             </p>
           </div>
         )}
