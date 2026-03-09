@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { searchMulti, searchMovies, searchTV, searchPeople } from "../api/tmdb";
+import { searchBackendMovies } from "../api/backendApi";
 import useDebounce from "../hooks/useDebounce";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import SearchBar from "../components/SearchBar";
@@ -18,6 +19,7 @@ const Search = () => {
   const [query, setQuery] = useState(initialQuery);
   const [activeTab, setActiveTab] = useState(initialTab);
   const [results, setResults] = useState([]);
+  const [backendResults, setBackendResults] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
@@ -45,6 +47,7 @@ const Search = () => {
   useEffect(() => {
     if (debouncedQuery.trim().length < 2) {
       setResults([]);
+      setBackendResults([]);
       setTotalResults(0);
       setCounts({ all: 0, movie: 0, tv: 0, person: 0 });
       return;
@@ -55,13 +58,39 @@ const Search = () => {
       setError(null);
       setPage(1);
       setResults([]);
+      setBackendResults([]);
 
       try {
-        const searchFn = getSearchFunction(activeTab);
-        const res = await searchFn(debouncedQuery, 1);
-        setResults(res.data.results || []);
-        setTotalPages(res.data.total_pages || 1);
-        setTotalResults(res.data.total_results || 0);
+        // Run TMDB search and backend search in parallel
+        // Backend search only runs on page 1 (no pagination for local results)
+        const [tmdbRes, backendRes] = await Promise.all([
+          getSearchFunction(activeTab)(debouncedQuery, 1),
+          searchBackendMovies(debouncedQuery),
+        ]);
+
+        const tmdbResults   = tmdbRes?.data?.results   || [];
+        const localResults  = backendRes?.data?.results || [];
+
+        // Deduplicate: if a backend movie has a movieId that matches
+        // a TMDB result id, keep the backend version (it may have richer data)
+        // and remove the TMDB duplicate
+        const tmdbIds = new Set(tmdbResults.map(r => String(r.id)));
+        const uniqueLocalResults = localResults.filter(
+          r => !tmdbIds.has(String(r.id))
+        );
+
+        // Tag TMDB results with source for display differentiation
+        const taggedTmdb = tmdbResults.map(r => ({
+          ...r,
+          source: r.source || 'tmdb',
+        }));
+
+        // On first page: backend results go FIRST (admin content is prioritized)
+        // followed by TMDB results
+        setBackendResults(uniqueLocalResults);
+        setResults([...uniqueLocalResults, ...taggedTmdb]);
+        setTotalPages(tmdbRes.data.total_pages || 1);
+        setTotalResults(tmdbRes.data.total_results || 0);
 
         if (activeTab === "all") {
           try {
@@ -71,9 +100,11 @@ const Search = () => {
               searchPeople(debouncedQuery, 1),
             ]);
             setCounts({
-              all: res.data.total_results || 0,
-              movie: moviesRes.data.total_results || 0,
-              tv: tvRes.data.total_results || 0,
+              all: (tmdbRes.data.total_results || 0) + uniqueLocalResults.length,
+              movie: (moviesRes.data.total_results || 0) + 
+                uniqueLocalResults.filter(r => r.media_type === 'movie').length,
+              tv: (tvRes.data.total_results || 0) + 
+                uniqueLocalResults.filter(r => r.media_type === 'tv').length,
               person: peopleRes.data.total_results || 0,
             });
           } catch (e) {
@@ -82,7 +113,8 @@ const Search = () => {
         } else {
           setCounts((prev) => ({
             ...prev,
-            [activeTab]: res.data.total_results || 0,
+            [activeTab]: (tmdbRes.data.total_results || 0) + 
+              uniqueLocalResults.filter(r => r.media_type === activeTab).length,
           }));
         }
       } catch (err) {

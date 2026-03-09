@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("../routes/auth.routes");
 const userRoutes = require("../routes/user.routes");
 const adminRoutes = require("../routes/admin.routes");
+const movieRoutes = require("../routes/movie.routes");
 const app = express();
 
 // Middleware
@@ -51,6 +52,7 @@ app.get('/api/health', async (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/movies", movieRoutes);
 
 // Root endpoint
 app.get("/", (req, res) => {

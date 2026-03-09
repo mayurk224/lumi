@@ -20,6 +20,7 @@ const MovieCard = ({
   type = "movie",
   releaseDate,
   overview,
+  source,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,7 +31,15 @@ const MovieCard = ({
   const displayRating = rating ? rating.toFixed(1) : "N/A";
 
   const handleClick = () => {
-    navigate(`/${type}/${id}`);
+    // Only navigate if id looks like a valid TMDB numeric id
+    if (id && !isNaN(Number(id))) {
+      navigate(`/${type}/${id}`);
+    } else if (source === 'backend') {
+      // Backend movie without TMDB id — show basic info or do nothing
+      toast.error('No detail page available for this title');
+    } else {
+      navigate(`/${type}/${id}`);
+    }
   };
 
   const handleFavoriteClick = async (e) => {
@@ -60,6 +69,18 @@ const MovieCard = ({
       onClick={handleClick}
     >
       <div className="relative overflow-hidden rounded-xl aspect-[2/3] bg-dark-300/50 mb-3">
+        {source === 'backend' && (
+          <div className="absolute top-2 left-2 z-10 bg-primary-500/90 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+            Custom
+          </div>
+        )}
+        {!source && (
+          <div className="absolute top-2 left-2">
+            <span className="bg-primary-500/90 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+              {type === "tv" ? "TV" : "Movie"}
+            </span>
+          </div>
+        )}
         <img
           src={posterUrl}
           alt={title}
@@ -72,11 +93,7 @@ const MovieCard = ({
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        <div className="absolute top-2 left-2">
-          <span className="bg-primary-500/90 text-white text-xs font-medium px-2 py-0.5 rounded-full">
-            {type === "tv" ? "TV" : "Movie"}
-          </span>
-        </div>
+
 
         <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/70 rounded-full px-2 py-0.5">
           <FiStar className="w-3 h-3 text-yellow-400 fill-yellow-400" />
