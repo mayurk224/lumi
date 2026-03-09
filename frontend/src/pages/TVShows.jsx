@@ -108,7 +108,7 @@ const TVShows = () => {
         )}
 
         {/* Show Grid */}
-        <MovieGrid movies={filteredShows} isLoading={loading} />
+        <MovieGrid movies={filteredShows} isLoading={loading} type="tv" />
 
         {/* Infinite Scroll Sentinel */}
         {!loading && hasMore && filteredShows.length > 0 && (

@@ -169,14 +169,6 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <NavLink
-                  to="/genres"
-                  className={({ isActive }) =>
-                    `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? "text-primary-400 bg-primary-500/10" : "text-gray-300 hover:text-white hover:bg-white/5"}`
-                  }
-                >
-                  <FiGrid className="w-4 h-4" /> Genres
-                </NavLink>
                 <Link
                   to="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white transition-colors"

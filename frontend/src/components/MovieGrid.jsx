@@ -30,12 +30,12 @@ export default function MovieGrid({
         <MovieCard
           key={movie.movieId || movie.id}
           id={movie.movieId || movie.id}
-          title={movie.title}
+          title={movie.title || movie.name}
           posterPath={movie.posterUrl ? null : movie.poster_path}
           posterUrl={movie.posterUrl}
           rating={movie.vote_average || movie.rating}
           type={type}
-          releaseDate={movie.release_date || movie.releaseDate}
+          releaseDate={movie.release_date || movie.first_air_date}
           overview={movie.overview}
         />
       ))}
