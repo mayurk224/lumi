@@ -150,7 +150,8 @@ const Login = () => {
 
           <div className="mt-4 p-3 bg-dark-300/50 rounded-xl border border-white/5">
             <p className="text-xs text-gray-500 text-center">
-              Demo: test@test.com / 123456 — Admin: admin@movie.com / admin123
+              Demo: mayurk224@gmail.com / Password or Admin: beqyly@denipl.com /
+              Password
             </p>
           </div>
         </div>
