@@ -11,6 +11,8 @@ import {
   FiX,
   FiShield,
   FiUser,
+  FiFilm,
+  FiTv,
 } from "react-icons/fi";
 
 const Navbar = () => {
@@ -78,6 +80,22 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center gap-1">
+            <NavLink
+              to="/movies"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? "text-primary-400 bg-primary-500/10" : "text-gray-300 hover:text-white hover:bg-white/5"}`
+              }
+            >
+              <FiFilm className="w-4 h-4" /> Movies
+            </NavLink>
+            <NavLink
+              to="/tv-shows"
+              className={({ isActive }) =>
+                `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive ? "text-primary-400 bg-primary-500/10" : "text-gray-300 hover:text-white hover:bg-white/5"}`
+              }
+            >
+              <FiTv className="w-4 h-4" /> TV Shows
+            </NavLink>
             {user ? (
               <>
                 <NavLink
@@ -183,6 +201,20 @@ const Navbar = () => {
           </div>
 
           <div className="px-4 space-y-1 mt-2">
+            <Link
+              to="/movies"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full flex items-center gap-3 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg px-2"
+            >
+              <FiFilm className="w-4 h-4" /> Movies
+            </Link>
+            <Link
+              to="/tv-shows"
+              onClick={() => setIsMenuOpen(false)}
+              className="w-full flex items-center gap-3 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg px-2"
+            >
+              <FiTv className="w-4 h-4" /> TV Shows
+            </Link>
             {user ? (
               <>
                 <Link

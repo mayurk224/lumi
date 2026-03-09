@@ -184,8 +184,9 @@ const AdminUsers = () => {
           </button>
         </div>
       ) : (
-        <div className="bg-dark-200 border border-white/5 rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-12 gap-4 px-5 py-3 border-b border-white/5 text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <div className="overflow-x-auto">
+          <div className="bg-dark-200 border border-white/5 rounded-2xl overflow-hidden min-w-[800px]">
+            <div className="grid grid-cols-12 gap-4 px-5 py-3 border-b border-white/5 text-xs font-medium text-gray-500 uppercase tracking-wider">
             <div className="col-span-4">User</div>
             <div className="col-span-3">Email</div>
             <div className="col-span-1">Role</div>
@@ -305,6 +306,7 @@ const AdminUsers = () => {
               Showing {filteredUsers.length} of {users.length} users
             </p>
           </div>
+        </div>
         </div>
       )}
     </div>

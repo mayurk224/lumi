@@ -176,7 +176,7 @@ const Search = () => {
 
       <div className="max-w-7xl mx-auto py-8">
         {!isLoading && results.length > 0 && debouncedQuery && (
-          <div className="px-4 sm:px-8 mb-6 flex items-center justify-between">
+          <div className="px-4 sm:px-8 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <p className="text-gray-400 text-sm">
               Showing{" "}
               <span className="text-white font-semibold">{results.length}</span>{" "}

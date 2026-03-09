@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const SkeletonCard = () => {
   return (
@@ -28,4 +28,4 @@ const SkeletonBanner = () => {
 };
 
 export { SkeletonCard, SkeletonBanner };
-export default SkeletonCard;
+export default memo(SkeletonCard);

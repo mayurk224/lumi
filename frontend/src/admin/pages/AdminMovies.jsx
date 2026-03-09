@@ -178,8 +178,9 @@ const AdminMovies = () => {
           </button>
         </div>
       ) : (
-        <div className="bg-dark-200 border border-white/5 rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-12 gap-4 px-5 py-3 border-b border-white/5 text-xs font-medium text-gray-500 uppercase tracking-wider">
+        <div className="overflow-x-auto">
+          <div className="bg-dark-200 border border-white/5 rounded-2xl overflow-hidden min-w-[800px]">
+            <div className="grid grid-cols-12 gap-4 px-5 py-3 border-b border-white/5 text-xs font-medium text-gray-500 uppercase tracking-wider">
             <div className="col-span-5">Movie</div>
             <div className="col-span-2">Category</div>
             <div className="col-span-2">Genre</div>
@@ -267,6 +268,7 @@ const AdminMovies = () => {
               Showing {filteredMovies.length} of {movies.length} movies
             </p>
           </div>
+        </div>
         </div>
       )}
     </div>

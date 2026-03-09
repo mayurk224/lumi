@@ -74,6 +74,7 @@ const HeroBanner = ({ movies, isLoading }) => {
           src={getBackdropUrl(currentMovie.backdrop_path)}
           alt={currentMovie.title || currentMovie.name}
           className="w-full h-full object-cover"
+          fetchPriority="high"
           onError={(e) => {
             e.target.src = "/placeholder-backdrop.svg";
           }}
@@ -115,7 +116,7 @@ const HeroBanner = ({ movies, isLoading }) => {
           )}
         </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-3">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-3">
           {currentMovie.title || currentMovie.name}
         </h1>
 

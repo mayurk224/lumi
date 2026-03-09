@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 import TrailerModal from "../components/TrailerModal";
 import CastCard from "../components/CastCard";
 import MovieRow from "../components/MovieRow";
-import DetailSkeleton from "../components/DetailSkeleton";
+import SkeletonDetailPage from "../components/SkeletonDetailPage";
 import RatingCircle from "../components/RatingCircle";
 import {
   FiPlay,
@@ -133,7 +133,7 @@ export default function MovieDetail() {
     }
   };
 
-  if (isLoading) return <DetailSkeleton />;
+  if (isLoading) return <SkeletonDetailPage />;
 
   if (error) {
     return (

@@ -54,3 +54,57 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Page Transitions */
+.page-transition {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Smooth image loading */
+img {
+  transition: opacity 0.3s ease;
+}
+
+/* Focus styles for better accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Mobile tap targets */
+@media (max-width: 640px) {
+  button,
+  a {
+    min-height: 44px;
+  }
+}
+
+/* Responsive table wrapper */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide elements on mobile */
+@media (max-width: 640px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}

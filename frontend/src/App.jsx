@@ -18,6 +18,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import Layout from "./components/Layout";
 import Toast from "./components/Toast";
+import ErrorBoundary from "./components/ErrorBoundary";
+import ScrollToTop from "./components/ScrollToTop";
+import NetworkStatus from "./components/NetworkStatus";
+import PageTransition from "./components/PageTransition";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -31,6 +35,8 @@ import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import PersonDetail from "./pages/PersonDetail";
 import Profile from "./pages/Profile";
+import Movies from "./pages/Movies";
+import TVShows from "./pages/TVShows";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,63 +63,71 @@ function App() {
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Toast />
+      <NetworkStatus />
       <Router>
+        <ScrollToTop />
         <Layout>
-          <Routes>
-            {/* Public routes */}
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/movie/:id" element={<MovieDetail />} />
-            <Route path="/tv/:id" element={<TVDetail />} />
-            <Route path="/person/:id" element={<PersonDetail />} />
-            <Route path="/search" element={<Search />} />
+          <PageTransition>
+            <Routes>
+              {/* Public routes */}
+              <Route path="/" element={<Home />} />
+              <Route path="/movies" element={<Movies />} />
+              <Route path="/movies/:category" element={<Movies />} />
+              <Route path="/tv-shows" element={<TVShows />} />
+              <Route path="/tv-shows/:category" element={<TVShows />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/movie/:id" element={<MovieDetail />} />
+              <Route path="/tv/:id" element={<TVDetail />} />
+              <Route path="/person/:id" element={<PersonDetail />} />
+              <Route path="/search" element={<Search />} />
 
-            {/* Protected user routes */}
-            <Route
-              path="/favorites"
-              element={
-                <PrivateRoute>
-                  <Favorites />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/history"
-              element={
-                <PrivateRoute>
-                  <WatchHistory />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
+              {/* Protected user routes */}
+              <Route
+                path="/favorites"
+                element={
+                  <PrivateRoute>
+                    <Favorites />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/history"
+                element={
+                  <PrivateRoute>
+                    <WatchHistory />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <PrivateRoute>
+                    <Profile />
+                  </PrivateRoute>
+                }
+              />
 
-            {/* Admin only route */}
-            <Route
-              path="/admin/*"
-              element={
-                <AdminRoute>
-                  <Admin />
-                </AdminRoute>
-              }
-            />
+              {/* Admin only route */}
+              <Route
+                path="/admin/*"
+                element={
+                  <AdminRoute>
+                    <Admin />
+                  </AdminRoute>
+                }
+              />
 
-            {/* Fallback */}
-            <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<Navigate to="/404" replace />} />
-          </Routes>
+              {/* Fallback */}
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
+            </Routes>
+          </PageTransition>
         </Layout>
       </Router>
-    </>
+    </ErrorBoundary>
   );
 }
 

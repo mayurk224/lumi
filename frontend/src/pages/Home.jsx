@@ -115,6 +115,7 @@ const Home = () => {
           movies={filteredMovies}
           isLoading={moviesLoading}
           type="movie"
+          seeAllLink="/movies/popular"
         />
       </section>
 
@@ -130,6 +131,7 @@ const Home = () => {
           movies={nowPlaying}
           isLoading={nowPlayingLoading}
           type="movie"
+          seeAllLink="/movies/now-playing"
         />
       </section>
 
@@ -145,6 +147,7 @@ const Home = () => {
           movies={topRated}
           isLoading={topRatedLoading}
           type="movie"
+          seeAllLink="/movies/top-rated"
         />
       </section>
 
@@ -165,6 +168,7 @@ const Home = () => {
           movies={filteredTV}
           isLoading={tvLoading}
           type="tv"
+          seeAllLink="/tv-shows/popular"
         />
       </section>
     </div>

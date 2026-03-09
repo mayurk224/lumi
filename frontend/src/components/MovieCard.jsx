@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getPosterUrl } from "../api/tmdb";
@@ -110,4 +110,4 @@ const MovieCard = ({
   );
 };
 
-export default MovieCard;
+export default memo(MovieCard);

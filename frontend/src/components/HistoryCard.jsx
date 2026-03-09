@@ -84,7 +84,7 @@ export default function HistoryCard({
         </div>
       </div>
 
-      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 sm:opacity-100">
         <button
           onClick={(e) => {
             e.stopPropagation();

@@ -33,14 +33,14 @@ export default function TrailerModal({ isOpen, onClose, trailerKey, title }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 sm:p-6"
       onClick={handleBackdropClick}
     >
-      <div className="relative w-full max-w-5xl bg-dark-200 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="relative w-full max-w-5xl sm:max-w-6xl bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border border-white/10 max-h-[90vh] sm:max-h-none overflow-y-auto">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-white/10">
           <div>
-            <h3 className="text-white font-bold text-lg">{title}</h3>
-            <p className="text-gray-400 text-sm">Official Trailer</p>
+            <h3 className="text-white font-bold text-base sm:text-lg">{title}</h3>
+            <p className="text-gray-400 text-xs sm:text-sm">Official Trailer</p>
           </div>
           <button
             onClick={onClose}
@@ -62,8 +62,8 @@ export default function TrailerModal({ isOpen, onClose, trailerKey, title }) {
             />
           </div>
         ) : (
-          <div className="aspect-video w-full bg-dark-300/50 flex flex-col items-center justify-center gap-4">
-            <div className="w-16 h-16 bg-dark-300 rounded-full flex items-center justify-center">
+          <div className="aspect-video w-full bg-gray-700/50 flex flex-col items-center justify-center gap-4">
+            <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center">
               <FiAlertCircle className="w-8 h-8 text-gray-500" />
             </div>
             <div className="text-center">
@@ -77,7 +77,7 @@ export default function TrailerModal({ isOpen, onClose, trailerKey, title }) {
           </div>
         )}
 
-        <div className="px-6 py-3 bg-dark-300/20 border-t border-white/5">
+        <div className="px-4 sm:px-6 py-3 bg-gray-700/20 border-t border-white/5">
           <p className="text-gray-500 text-xs text-center">
             Press ESC or click outside to close
           </p>
