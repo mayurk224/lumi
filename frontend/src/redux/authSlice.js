@@ -9,10 +9,8 @@ export const registerUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/api/auth/register", userData);
-      const { token, ...user } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      return { token, user };
+      // Cookie is set automatically by the server — no client action needed
+      return response.data;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Registration failed",
@@ -30,10 +28,8 @@ export const loginUser = createAsyncThunk(
         "/api/auth/login",
         credentials,
       );
-      const { token, ...user } = response.data;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      return { token, user };
+      // Cookie is set automatically by the server — client does nothing
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
     }
@@ -55,29 +51,40 @@ export const fetchCurrentUser = createAsyncThunk(
   },
 );
 
-// Load initial state from localStorage
-const storedUser = localStorage.getItem("user");
-const initialUser = storedUser ? JSON.parse(storedUser) : null;
-const initialToken = localStorage.getItem("token") || null;
+// Async thunk: Logout - blacklist token on server
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      // Call backend to blacklist the token and clear cookie
+      await axiosInstance.post("/api/auth/logout");
+    } catch (error) {
+      // Even if backend call fails, proceed with client-side logout
+      console.warn('Server logout failed:', error.message);
+    }
+    // No localStorage to clear — cookie is managed by browser/server
+  },
+);
 
+// Load initial state from localStorage (for non-auth UI preferences only)
+// Authentication state is determined by calling /api/auth/me on app load
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: initialUser,
-    token: initialToken,
-    isAuthenticated: !!initialToken,
+    user: null,        // Token is now in HttpOnly cookie — not accessible to JS
+    token: null,
+    isAuthenticated: false,
     isLoading: false,
     error: null,
     isInitialized: false,
   },
   reducers: {
-    logout: (state) => {
+    localLogout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
       state.error = null;
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+      // No localStorage to clear
     },
     clearError: (state) => {
       state.error = null;
@@ -98,8 +105,9 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.isAuthenticated = true;
+        state.error = null;
+        // No token to store — it's in the HttpOnly cookie
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -115,8 +123,8 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
         state.isAuthenticated = true;
+        // No token handling
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -140,13 +148,31 @@ const authSlice = createSlice({
         state.token = null;
         state.isAuthenticated = false;
         state.isInitialized = true;
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        // Not an error to show — just not logged in
+      });
+
+    // Logout
+    builder
+      .addCase(logoutUser.pending, (state) => {
+        // Optional: could show loading but usually instant
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.error = null;
+      })
+      .addCase(logoutUser.rejected, (state) => {
+        // Still log out on the client even if server call failed
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.error = null;
       });
   },
 });
 
-export const { logout, clearError, setCredentials } = authSlice.actions;
+export const { localLogout, clearError, setCredentials } = authSlice.actions;
 
 // Selectors
 export const selectUser = (state) => state.auth.user;

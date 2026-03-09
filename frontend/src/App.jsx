@@ -52,13 +52,13 @@ function App() {
 
   // Restore user session on app load
   useEffect(() => {
-    if (token) {
-      dispatch(fetchCurrentUser());
-    }
-  }, [dispatch, token]);
+    // Always attempt to restore session on load
+    // Cookie is sent automatically — server validates it
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
   // Show loading spinner until session check is done
-  if (token && !isInitialized) {
+  if (!isInitialized) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-dark-100">
         <div className="text-center">

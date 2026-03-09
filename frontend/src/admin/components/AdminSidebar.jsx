@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../../redux/authSlice";
+import { logoutUser, selectUser } from "../../redux/authSlice";
 import {
   FiGrid,
   FiFilm,
@@ -67,8 +67,8 @@ const AdminSidebar = () => {
           Back to Site
         </button>
         <button
-          onClick={() => {
-            dispatch(logout());
+          onClick={async () => {
+            await dispatch(logoutUser());
             navigate("/login");
           }}
           className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-400 hover:text-red-400 hover:bg-red-500/5 transition-all"

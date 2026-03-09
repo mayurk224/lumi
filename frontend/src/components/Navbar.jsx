@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { logout, selectUser, selectIsAdmin } from "../redux/authSlice";
+import { logoutUser, selectUser, selectIsAdmin } from "../redux/authSlice";
 import {
   FiSearch,
   FiHeart,
@@ -35,8 +35,8 @@ const Navbar = () => {
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
     navigate("/login");
     setIsMenuOpen(false);
   };
