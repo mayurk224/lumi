@@ -8,8 +8,8 @@ const {
 } = require("../controllers/auth.controller");
 const { protect } = require("../middleware/auth.middleware");
 
-authRoutes.post("/sign-up", registerUser);
-authRoutes.post("/sign-in", loginUser);
+authRoutes.post("/register", registerUser);
+authRoutes.post("/login", loginUser);
 authRoutes.post("/logout", logoutUser);
 authRoutes.get("/me", protect, getMe);
 

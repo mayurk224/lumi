@@ -8,10 +8,11 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/auth/sign-up", userData);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data));
-      return response.data;
+      const response = await axiosInstance.post("/api/auth/register", userData);
+      const { token, ...user } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      return { token, user };
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Registration failed",
@@ -26,12 +27,13 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
-        "/api/auth/sign-in",
+        "/api/auth/login",
         credentials,
       );
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data));
-      return response.data;
+      const { token, ...user } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      return { token, user };
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed");
     }
@@ -63,6 +65,7 @@ const authSlice = createSlice({
   initialState: {
     user: initialUser,
     token: initialToken,
+    isAuthenticated: !!initialToken,
     isLoading: false,
     error: null,
     isInitialized: false,
@@ -71,6 +74,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      state.isAuthenticated = false;
       state.error = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -81,6 +85,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.isAuthenticated = true;
     },
   },
   extraReducers: (builder) => {
@@ -92,8 +97,9 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isAuthenticated = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -108,8 +114,9 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isAuthenticated = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -124,12 +131,14 @@ const authSlice = createSlice({
       .addCase(fetchCurrentUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
+        state.isAuthenticated = true;
         state.isInitialized = true;
       })
       .addCase(fetchCurrentUser.rejected, (state) => {
         state.isLoading = false;
         state.user = null;
         state.token = null;
+        state.isAuthenticated = false;
         state.isInitialized = true;
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -142,6 +151,7 @@ export const { logout, clearError, setCredentials } = authSlice.actions;
 // Selectors
 export const selectUser = (state) => state.auth.user;
 export const selectToken = (state) => state.auth.token;
+export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectIsLoading = (state) => state.auth.isLoading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectIsAdmin = (state) => state.auth.user?.role === "admin";
