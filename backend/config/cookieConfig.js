@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: isProduction, // Only secure in production
-  sameSite: isProduction ? "none" : "strict", // strict for development
+  sameSite: isProduction ? "none" : "lax", // lax for development to allow cross-origin
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
   path: "/",
 };
@@ -14,7 +14,7 @@ const COOKIE_OPTIONS = {
 const CLEAR_COOKIE_OPTIONS = {
   httpOnly: true,
   secure: isProduction,
-  sameSite: isProduction ? "none" : "strict",
+  sameSite: isProduction ? "none" : "lax",
   maxAge: 0, // Expire immediately
   path: "/",
 };
