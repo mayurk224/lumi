@@ -29,9 +29,13 @@ export const loginUser = createAsyncThunk(
         credentials,
       );
       // Cookie is set automatically by the server — client does nothing
+      console.log('[Auth] Login successful:', response.data.user);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+      const errorMessage = error.response?.data?.message || "Login failed";
+      const statusCode = error.response?.status;
+      console.error(`[Auth] Login failed (${statusCode}):`, errorMessage);
+      return rejectWithValue(errorMessage);
     }
   },
 );

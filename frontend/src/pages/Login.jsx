@@ -50,10 +50,18 @@ const Login = () => {
       return;
     }
 
-    const result = await dispatch(loginUser(formData));
-    if (loginUser.fulfilled.match(result)) {
-      toast.success("Welcome back!");
-      navigate(from, { replace: true });
+    try {
+      const result = await dispatch(loginUser(formData));
+      if (loginUser.fulfilled.match(result)) {
+        toast.success("Welcome back!");
+        navigate(from, { replace: true });
+      } else if (loginUser.rejected.match(result)) {
+        // Error is already handled by the slice and shown via toast
+        console.error('[Login] Login failed:', result.payload);
+      }
+    } catch (error) {
+      console.error('[Login] Unexpected error:', error);
+      toast.error("An unexpected error occurred. Please try again.");
     }
   };
 

@@ -57,25 +57,32 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    console.log(`[Auth] Login attempt for: ${email}`);
 
     const user = await User.findOne({ email });
     if (!user) {
+      console.log(`[Auth] User not found: ${email}`);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     if (user.isBanned) {
+      console.log(`[Auth] Banned user attempted login: ${email}`);
       return res.status(403).json({ message: "Your account has been banned" });
     }
 
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
+      console.log(`[Auth] Invalid password for: ${email}`);
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     const token = generateToken(user._id);
+    console.log(`[Auth] Token generated for: ${email}`);
 
     // Set JWT as HttpOnly cookie
     res.cookie(COOKIE_NAME, token, COOKIE_OPTIONS);
+    console.log(`[Auth] Cookie set for: ${email}`);
 
     // Return user data WITHOUT token in body
     res.status(200).json({
@@ -88,6 +95,7 @@ const loginUser = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error(`[Auth] Login error:`, error.message);
     res.status(500).json({ message: error.message });
   }
 };
