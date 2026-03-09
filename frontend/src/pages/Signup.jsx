@@ -109,10 +109,10 @@ const Signup = () => {
             <div className="w-10 h-10 bg-primary-500 rounded-xl flex items-center justify-center">
               <FiFilm className="w-5 h-5 text-white" />
             </div>
-            <span className="text-white font-bold text-2xl">MovieVault</span>
+            <span className="text-white font-bold text-2xl">Lumi</span>
           </Link>
           <h1 className="text-3xl font-bold text-white">Create your account</h1>
-          <p className="text-gray-400 mt-2">Join MovieVault today</p>
+          <p className="text-gray-400 mt-2">Join Lumi today</p>
         </div>
 
         <div className="bg-dark-200 rounded-2xl p-8 border border-white/10 shadow-2xl">
